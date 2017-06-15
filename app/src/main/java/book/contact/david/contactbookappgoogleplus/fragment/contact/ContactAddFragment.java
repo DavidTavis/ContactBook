@@ -1,4 +1,4 @@
-package book.contact.david.contactbookappgoogleplus.fragment;
+package book.contact.david.contactbookappgoogleplus.fragment.contact;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -39,11 +39,7 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
 
 
     Contact contact = null;
-    Phone phone = null;
-    Email email = null;
 
-    private PhoneDAO phoneDAO;
-    private EmailDAO emailDAO;
     private ContactDAO contactDAO;
     private AddContactTask addConactTask;
 
@@ -52,22 +48,20 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        phoneDAO = new PhoneDAO(getActivity());
-        emailDAO = new EmailDAO(getActivity());
         contactDAO = new ContactDAO(getActivity());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_contacts, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_add_contacts, container, false);
 
         findViewsById(rootView);
 
         setListeners();
 
         return rootView;
+
     }
 
     private void setListeners() {
@@ -89,11 +83,15 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onResume() {
+
         getActivity().setTitle(R.string.add_contact);
+
         android.app.ActionBar actionBar = getActivity().getActionBar();
+
         if(actionBar!=null) {
             actionBar.setTitle(R.string.add_contact);
         }
+
         super.onResume();
     }
 
@@ -131,11 +129,10 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
 
         @Override
         protected void onPostExecute(Long result) {
-            if (activityWeakRef.get() != null
-                    && !activityWeakRef.get().isFinishing()) {
-                if (result != -1)
-                    Toast.makeText(activityWeakRef.get(), "Contact Saved",
-                            Toast.LENGTH_LONG).show();
+            if (activityWeakRef.get() != null && !activityWeakRef.get().isFinishing()) {
+                if (result != -1) {
+                    Toast.makeText(activityWeakRef.get(), "Contact Saved", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

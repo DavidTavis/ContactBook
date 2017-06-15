@@ -1,18 +1,21 @@
 package book.contact.david.contactbookappgoogleplus.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import book.contact.david.contactbookappgoogleplus.R;
+import book.contact.david.contactbookappgoogleplus.Utils;
+import book.contact.david.contactbookappgoogleplus.activities.PhoneActivity;
 import book.contact.david.contactbookappgoogleplus.model.Contact;
 
 /**
@@ -25,15 +28,15 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
     List<Contact> contacts;
 
     public ContactListAdapter(Context context, List<Contact> contacts) {
-        super(context, R.layout.list_item, contacts);
+        super(context, R.layout.list_contact_item, contacts);
         this.context = context;
         this.contacts = contacts;
     }
 
     private class ViewHolder {
-//        TextView idTxt;
         TextView firstNameTxt;
         TextView lastNameTxt;
+        ImageButton addPhoneBtn;
     }
 
     @Override
@@ -54,26 +57,42 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        final Contact contact = (Contact) getItem(position);
+
         ViewHolder holder = null;
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item, null);
+            convertView = inflater.inflate(R.layout.list_contact_item, null);
 
             holder = new ViewHolder();
 
-//            holder.idTxt = (TextView) convertView.findViewById(R.id.txt_emp_id);
             holder.firstNameTxt = (TextView) convertView.findViewById(R.id.txt_first_name);
             holder.lastNameTxt = (TextView) convertView.findViewById(R.id.txt_last_name);
+            holder.addPhoneBtn = (ImageButton) convertView.findViewById(R.id.button_add_number);
+
+            holder.addPhoneBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    SharedPreferences.Editor editor = getContext().getSharedPreferences("myContactPref",Context.MODE_PRIVATE).edit();
+                    editor.putInt("contactId",contact.getId()).commit();
+
+                    Utils.logInfo("click image button - contactId = " + contact.getId());
+
+                    Intent intent = new Intent(context, PhoneActivity.class);
+                    context.startActivity(intent);
+
+                }
+            });
 
             convertView.setTag(holder);
+
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Contact contact = (Contact) getItem(position);
 
-//        holder.idTxt.setText(contact.getId() + "");
+
         holder.firstNameTxt.setText(contact.getFirstName());
         holder.lastNameTxt.setText(contact.getLastName());
 

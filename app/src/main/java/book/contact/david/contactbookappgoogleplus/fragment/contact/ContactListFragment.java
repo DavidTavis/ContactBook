@@ -1,4 +1,4 @@
-package book.contact.david.contactbookappgoogleplus.fragment;
+package book.contact.david.contactbookappgoogleplus.fragment.contact;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import book.contact.david.contactbookappgoogleplus.R;
+import book.contact.david.contactbookappgoogleplus.Utils;
 import book.contact.david.contactbookappgoogleplus.adapter.ContactListAdapter;
 import book.contact.david.contactbookappgoogleplus.db.ContactDAO;
 import book.contact.david.contactbookappgoogleplus.model.Contact;
@@ -48,10 +48,10 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contact_list, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
+
         findViewsById(view);
 
         task = new GetContactTask(activity);
@@ -59,7 +59,9 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
 
         contactListView.setOnItemClickListener(this);
         contactListView.setOnItemLongClickListener(this);
+
         return view;
+
     }
 
     private void findViewsById(View view) {
@@ -67,23 +69,23 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public void onItemClick(AdapterView<?> list, View view, int position,
-                            long id) {
+    public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+
         Contact contact = (Contact) list.getItemAtPosition(position);
 
         if (contact != null) {
+
             Bundle arguments = new Bundle();
             arguments.putParcelable("selectedContact", contact);
             CustomContactDialogFragment customContactDialogFragment = new CustomContactDialogFragment();
             customContactDialogFragment.setArguments(arguments);
-            customContactDialogFragment.show(getFragmentManager(),
-                    CustomContactDialogFragment.ARG_ITEM_ID);
+            customContactDialogFragment.show(getFragmentManager(), CustomContactDialogFragment.ARG_ITEM_ID);
+
         }
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                   int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         Contact contact = (Contact) parent.getItemAtPosition(position);
         // Use AsyncTask to delete from database
         contactDAO.deleteContact(contact);
@@ -102,8 +104,8 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
 
         @Override
         protected ArrayList<Contact> doInBackground(Void... arg0) {
-            ArrayList<Contact> employeeList = contactDAO.getContacts();
-            return employeeList;
+            ArrayList<Contact> contactList = contactDAO.getContacts();
+            return contactList;
         }
 
         @Override
@@ -115,7 +117,7 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
                         contactListAdapter = new ContactListAdapter(activity,contactList);
                         contactListView.setAdapter(contactListAdapter);
                     } else {
-                        Toast.makeText(activity, "No Employee Records",Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "No Contact Records",Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -124,7 +126,7 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
 
     /*
      * This method is invoked from MainActivity onFinishDialog() method. It is
-     * called from CustomEmpDialogFragment when an employee record is updated.
+     * called from CustomContactDialogFragment when a contact record is updated.
      * This is used for communicating between fragments.
      */
     public void updateView() {

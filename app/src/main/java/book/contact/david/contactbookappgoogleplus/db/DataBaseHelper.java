@@ -4,13 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import book.contact.david.contactbookappgoogleplus.Utils;
+
 /**
  * Created by TechnoA on 14.06.2017.
  */
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "contacts_db";
+    private static final String DATABASE_NAME = "contact_book_db";
     private static final int DATABASE_VERSION = 1;
 
     //table
@@ -41,18 +43,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + CONTACT_USER_ID_COLUMN + " TEXT" + ")";
 
     //create PHONE table constant
+//    public static final String CREATE_PHONE_TABLE = "CREATE TABLE "
+//            + PHONE_TABLE + "(" + PHONE_ID_COLUMN + " INTEGER PRIMARY KEY,"
+//            + PHONE_NUMBER_COLUMN + " TEXT, "
+//            + "FOREIGN KEY(" + PHONE_CONTACT_ID_COLUMN + ") REFERENCES "
+//            + CONTACT_TABLE + "(user_id) " + ")";
     public static final String CREATE_PHONE_TABLE = "CREATE TABLE "
             + PHONE_TABLE + "(" + PHONE_ID_COLUMN + " INTEGER PRIMARY KEY,"
             + PHONE_NUMBER_COLUMN + " TEXT, "
-            + "FOREIGN KEY(" + PHONE_CONTACT_ID_COLUMN + ") REFERENCES "
-            + CONTACT_TABLE + "(user_id) " + ")";
+            + PHONE_CONTACT_ID_COLUMN + " TEXT " + ")";
 
     //create EMAIL table constant
+//    public static final String CREATE_EMAIL_TABLE = "CREATE TABLE "
+//            + EMAIL_TABLE + "(" + EMAIL_ID_COLUMN + " INTEGER PRIMARY KEY,"
+//            + EMAIL_EMAIL_COLUMN + " TEXT, "
+//            + "FOREIGN KEY(" + EMAIL_CONTACT_ID_COLUMN + ") REFERENCES "
+//            + CONTACT_TABLE + "(user_id) " + ")";
     public static final String CREATE_EMAIL_TABLE = "CREATE TABLE "
             + EMAIL_TABLE + "(" + EMAIL_ID_COLUMN + " INTEGER PRIMARY KEY,"
             + EMAIL_EMAIL_COLUMN + " TEXT, "
-            + "FOREIGN KEY(" + EMAIL_CONTACT_ID_COLUMN + ") REFERENCES "
-            + CONTACT_TABLE + "(user_id) " + ")";
+            + EMAIL_CONTACT_ID_COLUMN + " TEXT " + ")";
 
     private static DataBaseHelper instance;
 
@@ -77,14 +87,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_CONTACT_TABLE);
-//        db.execSQL(CREATE_PHONE_TABLE);
-//        db.execSQL(CREATE_EMAIL_TABLE);
+        createDB(db);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        createDB(db);
     }
 
+    private void createDB(SQLiteDatabase db){
+        db.execSQL(CREATE_CONTACT_TABLE);
+        db.execSQL(CREATE_PHONE_TABLE);
+        db.execSQL(CREATE_EMAIL_TABLE);
+    }
 }

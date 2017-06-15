@@ -1,9 +1,4 @@
-package book.contact.david.contactbookappgoogleplus.fragment;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
+package book.contact.david.contactbookappgoogleplus.fragment.contact;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,11 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.activities.MainActivity;
@@ -45,11 +41,11 @@ public class CustomContactDialogFragment extends DialogFragment {
             "yyyy-MM-dd", Locale.ENGLISH);
 
     /*
-     * Callback used to communicate with EmpListFragment to notify the list adapter.
-     * MainActivity implements this interface and communicates with EmpListFragment.
+     * Callback used to communicate with ContactListFragment to notify the list adapter.
+     * MainActivity implements this interface and communicates with ContactListFragment.
      */
     public interface CustomContactDialogFragmentListener {
-        void onFinishDialog();
+        void onFinishContactDialog();
     }
 
     public CustomContactDialogFragment() {
@@ -79,7 +75,7 @@ public class CustomContactDialogFragment extends DialogFragment {
 
         setValue();
 
-        builder.setTitle(R.string.update_emp);
+        builder.setTitle(R.string.update_contact);
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -89,10 +85,10 @@ public class CustomContactDialogFragment extends DialogFragment {
                         long result = contactDAO.update(contact);
                         if (result > 0) {
                             MainActivity activity = (MainActivity) getActivity();
-                            activity.onFinishDialog();
+                            activity.onFinishContactDialog();
                         } else {
                             Toast.makeText(getActivity(),
-                                    "Unable to update employee",
+                                    "Unable to update contact",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

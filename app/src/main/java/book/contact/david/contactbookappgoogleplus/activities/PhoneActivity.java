@@ -14,23 +14,27 @@ import android.view.MenuItem;
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactAddFragment;
 import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactListFragment;
-import book.contact.david.contactbookappgoogleplus.fragment.contact.CustomContactDialogFragment;
+import book.contact.david.contactbookappgoogleplus.fragment.phone.CustomPhoneDialogFragment;
+import book.contact.david.contactbookappgoogleplus.fragment.phone.PhoneAddFragment;
+import book.contact.david.contactbookappgoogleplus.fragment.phone.PhoneListFragment;
 
 /**
- * Created by TechnoA on 14.06.2017.
+ * Created by TechnoA on 15.06.2017.
  */
 
-public class MainActivity extends AppCompatActivity implements
-        CustomContactDialogFragment.CustomContactDialogFragmentListener {
+public class PhoneActivity extends AppCompatActivity implements
+        CustomPhoneDialogFragment.CustomPhoneDialogFragmentListener {
 
     private Fragment contentFragment;
-    private ContactListFragment contactListFragment;
-    private ContactAddFragment contactAddFragment;
+    private PhoneListFragment phoneListFragment;
+    private PhoneAddFragment phoneAddFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.contact_activity);
+        setContentView(R.layout.phone_activity);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -40,21 +44,21 @@ public class MainActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("content")) {
                 String content = savedInstanceState.getString("content");
-                if (content.equals(ContactAddFragment.ARG_ITEM_ID)) {
-                    if (fragmentManager.findFragmentByTag(ContactAddFragment.ARG_ITEM_ID) != null) {
-                        setFragmentTitle(R.string.add_contact);
-                        contentFragment = fragmentManager.findFragmentByTag(ContactAddFragment.ARG_ITEM_ID);
+                if (content.equals(PhoneAddFragment.ARG_ITEM_ID)) {
+                    if (fragmentManager.findFragmentByTag(PhoneAddFragment.ARG_ITEM_ID) != null) {
+                        setFragmentTitle(R.string.add_phone);
+                        contentFragment = fragmentManager.findFragmentByTag(PhoneAddFragment.ARG_ITEM_ID);
                     }
                 }
             }
-            if (fragmentManager.findFragmentByTag(ContactListFragment.ARG_ITEM_ID) != null) {
-                contactListFragment = (ContactListFragment) fragmentManager.findFragmentByTag(ContactListFragment.ARG_ITEM_ID);
-                contentFragment = contactListFragment;
+            if (fragmentManager.findFragmentByTag(PhoneListFragment.ARG_ITEM_ID) != null) {
+                phoneListFragment = (PhoneListFragment) fragmentManager.findFragmentByTag(PhoneListFragment.ARG_ITEM_ID);
+                contentFragment = phoneListFragment;
             }
         } else {
-            contactListFragment = new ContactListFragment();
+            phoneListFragment = new PhoneListFragment();
             setFragmentTitle(R.string.app_name);
-            switchContent(contactListFragment, ContactListFragment.ARG_ITEM_ID);
+            switchContent(phoneListFragment, PhoneListFragment.ARG_ITEM_ID);
         }
     }
 
@@ -68,9 +72,9 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                setFragmentTitle(R.string.add_contact);
-                contactAddFragment = new ContactAddFragment();
-                switchContent(contactAddFragment, ContactAddFragment.ARG_ITEM_ID);
+                setFragmentTitle(R.string.add_phone);
+                phoneAddFragment = new PhoneAddFragment();
+                switchContent(phoneAddFragment, ContactAddFragment.ARG_ITEM_ID);
 
                 return true;
         }
@@ -79,16 +83,16 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (contentFragment instanceof ContactAddFragment) {
-            outState.putString("content", ContactAddFragment.ARG_ITEM_ID);
+        if (contentFragment instanceof PhoneAddFragment) {
+            outState.putString("content", PhoneAddFragment.ARG_ITEM_ID);
         } else {
-            outState.putString("content", ContactListFragment.ARG_ITEM_ID);
+            outState.putString("content", PhoneListFragment.ARG_ITEM_ID);
         }
         super.onSaveInstanceState(outState);
     }
 
     /*
-     * We consider ContactListFragment as the home fragment and it is not added to
+     * We consider PhoneListFragment as the home fragment and it is not added to
      * the back stack.
      */
     public void switchContent(Fragment fragment, String tag) {
@@ -99,9 +103,9 @@ public class MainActivity extends AppCompatActivity implements
 
         if (fragment != null) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.content_frame, fragment, tag);
-            // Only ContactAddFragment is added to the back stack.
-            if (!(fragment instanceof ContactListFragment)) {
+            transaction.replace(R.id.content_phone_frame, fragment, tag);
+            // Only PhoneAddFragment is added to the back stack.
+            if (!(fragment instanceof PhoneListFragment)) {
                 transaction.addToBackStack(tag);
             }
             transaction.commit();
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
             super.onBackPressed();
-        } else if (contentFragment instanceof ContactListFragment || fm.getBackStackEntryCount() == 0) {
+        } else if (contentFragment instanceof PhoneListFragment || fm.getBackStackEntryCount() == 0) {
             //finish();
             //Shows an alert dialog on quit
             onShowQuitDialog();
@@ -156,13 +160,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /*
-     * Callback used to communicate with ContactListFragment to notify the list adapter.
+     * Callback used to communicate with PhoneListFragment to notify the list adapter.
      * Communication between fragments goes via their Activity class.
      */
     @Override
-    public void onFinishContactDialog() {
-        if (contactListFragment != null) {
-            contactListFragment.updateView();
+    public void onFinishPhoneDialog() {
+        if(phoneListFragment != null){
+            phoneListFragment.updateView();
         }
     }
 }
