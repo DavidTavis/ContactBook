@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "396048346741",
+    "project_id": "project--2317649374672554555"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396048346741:android:a8ccc64e06556e03",
+        "android_client_info": {
+          "package_name": "book.contact.david.contactbookappgoogleplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396048346741-1pvfa4ohtcupenqb4pua53r1f6i0gbfq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "david.contact.book",
+            "certificate_hash": "1e650910b7c4c7b8836a128479bd373368cd03c8"
+          }
+        },
+        {
+          "client_id": "396048346741-amjh1h1musr3lt4u9bq1r0g9hesnvp10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzgsFj0bCd_zR8QFCwLFf282ns7ywJguE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
