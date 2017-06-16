@@ -61,13 +61,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_add_phone_number).setVisible(false);
+        menu.findItem(R.id.action_add_email).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add:
+            case R.id.action_add_contact:
                 setFragmentTitle(R.string.add_contact);
                 contactAddFragment = new ContactAddFragment();
                 switchContent(contactAddFragment, ContactAddFragment.ARG_ITEM_ID);

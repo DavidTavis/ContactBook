@@ -68,13 +68,15 @@ public class PhoneActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_add_contact).setVisible(false);
+        menu.findItem(R.id.action_add_email).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add:
+            case R.id.action_add_phone_number:
                 setFragmentTitle(R.string.add_phone);
                 phoneAddFragment = new PhoneAddFragment();
                 switchContent(phoneAddFragment, ContactAddFragment.ARG_ITEM_ID);
@@ -122,7 +124,7 @@ public class PhoneActivity extends AppCompatActivity implements
         if (actionBar != null) {
 //            actionBar.setTitle(resourseId);
 
-            String name = pref.getString("contactFirstName", "Some") + " " + pref.getString("contactLastName", "Name");
+            String name = "Phone: " + pref.getString("contactFirstName", "Some") + " " + pref.getString("contactLastName", "Name");
             actionBar.setTitle(name);
         }
     }

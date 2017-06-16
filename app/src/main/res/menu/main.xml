@@ -2,10 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:id="@+id/action_add_contact"
+        android:icon="@drawable/account_plus"
         android:orderInCategory="100"
         app:showAsAction="ifRoom|withText"
         android:title="@string/add_contact"/>
-
+    <item
+        android:id="@+id/action_add_phone_number"
+        android:icon="@drawable/phone_plus"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/add_phone"/>
+    <item
+        android:id="@+id/action_add_email"
+        android:icon="@drawable/email"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/add_email"/>
 </menu>

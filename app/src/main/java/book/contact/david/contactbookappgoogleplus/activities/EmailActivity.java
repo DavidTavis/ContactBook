@@ -67,13 +67,15 @@ public class EmailActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_add_contact).setVisible(false);
+        menu.findItem(R.id.action_add_phone_number).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add:
+            case R.id.action_add_email:
                 setFragmentTitle();
                 emailAddFragment = new EmailAddFragment();
                 switchContent(emailAddFragment, EmailAddFragment.ARG_ITEM_ID);
@@ -118,7 +120,7 @@ public class EmailActivity extends AppCompatActivity implements
     protected void setFragmentTitle() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            String name = pref.getString("contactFirstName", "Some") + " " + pref.getString("contactLastName", "Name");
+            String name = "Email: " + pref.getString("contactFirstName", "Some") + " " + pref.getString("contactLastName", "Name");
             actionBar.setTitle(name);
         }
     }

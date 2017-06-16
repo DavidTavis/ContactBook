@@ -43,7 +43,8 @@ public class EmailDAO extends ContactDBDAO{
     public long update(Email email) {
         ContentValues values = new ContentValues();
         values.put(DataBaseHelper.EMAIL_EMAIL_COLUMN, email.getEmail());
-        values.put(DataBaseHelper.EMAIL_CONTACT_ID_COLUMN, email.getContact().getId());
+        String contactId = Integer.toString(pref.getInt("contactId",0));
+        values.put(DataBaseHelper.EMAIL_CONTACT_ID_COLUMN, contactId);
 
         long result = database.update(DataBaseHelper.EMAIL_TABLE, values,
                 WHERE_ID_EQUALS,

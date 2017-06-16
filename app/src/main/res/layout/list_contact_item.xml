@@ -11,48 +11,46 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/contactImage"
+            android:id="@+id/accountImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/account"></ImageView>
+
+        <TextView
+            android:id="@+id/txt_first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/accountImage"
+            android:padding="6dp" />
+
+        <TextView
+
+            android:id="@+id/txt_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/txt_first_name"
+            android:padding="6dp" />
+
+        <ImageButton
+            android:id="@+id/button_add_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="7dp"
             android:layout_marginTop="4dp"
             android:layout_toLeftOf="@id/button_add_number"
-            android:background="@drawable/email">
-        </ImageView>
+            android:background="@drawable/contact_mail"></ImageButton>
 
-            <TextView
-                android:id="@+id/txt_first_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="6dp" />
-
-            <TextView
-
-                android:id="@+id/txt_last_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/txt_first_name"
-                android:padding="6dp" />
-
-            <ImageButton
-                android:id="@+id/button_add_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_toLeftOf="@id/button_add_number"
-                android:background="@drawable/email">
-            </ImageButton>
-
-            <ImageButton
-                android:id="@+id/button_add_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/phone_plus">
-            </ImageButton>
+        <ImageButton
+            android:id="@+id/button_add_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/phone"></ImageButton>
 
 
     </RelativeLayout>

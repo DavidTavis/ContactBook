@@ -42,7 +42,8 @@ public class PhoneDAO extends ContactDBDAO{
     public long update(Phone phone) {
         ContentValues values = new ContentValues();
         values.put(DataBaseHelper.PHONE_NUMBER_COLUMN, phone.getNumber());
-        values.put(DataBaseHelper.PHONE_CONTACT_ID_COLUMN, phone.getContact().getId());
+        String contactId = Integer.toString(pref.getInt("contactId",0));
+        values.put(DataBaseHelper.PHONE_CONTACT_ID_COLUMN, contactId);
 
         long result = database.update(DataBaseHelper.PHONE_TABLE, values,
                 WHERE_ID_EQUALS,
