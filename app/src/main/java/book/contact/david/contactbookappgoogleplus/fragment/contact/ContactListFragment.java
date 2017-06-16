@@ -20,6 +20,8 @@ import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.Utils;
 import book.contact.david.contactbookappgoogleplus.adapter.ContactListAdapter;
 import book.contact.david.contactbookappgoogleplus.db.ContactDAO;
+import book.contact.david.contactbookappgoogleplus.db.EmailDAO;
+import book.contact.david.contactbookappgoogleplus.db.PhoneDAO;
 import book.contact.david.contactbookappgoogleplus.model.Contact;
 
 /**
@@ -37,6 +39,8 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
 
     ContactListAdapter contactListAdapter;
     ContactDAO contactDAO;
+    PhoneDAO phoneDAO;
+    EmailDAO emailDAO;
 
     private GetContactTask task;
 
@@ -45,6 +49,8 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
         super.onCreate(savedInstanceState);
         activity = getActivity();
         contactDAO = new ContactDAO(activity);
+        phoneDAO = new PhoneDAO(activity);
+        emailDAO = new EmailDAO(activity);
     }
 
     @Override
@@ -89,6 +95,9 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
         Contact contact = (Contact) parent.getItemAtPosition(position);
         // Use AsyncTask to delete from database
         contactDAO.deleteContact(contact);
+        String contactId = Integer.toString(contact.getId());
+        phoneDAO.deletePhone(contactId);
+        emailDAO.deleteEmail(contactId);
         contactListAdapter.remove(contact);
 
         return true;

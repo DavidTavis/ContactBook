@@ -1,10 +1,8 @@
 package book.contact.david.contactbookappgoogleplus.fragment.phone;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,11 +12,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import book.contact.david.contactbookappgoogleplus.R;
-import book.contact.david.contactbookappgoogleplus.activities.MainActivity;
 import book.contact.david.contactbookappgoogleplus.activities.PhoneActivity;
 import book.contact.david.contactbookappgoogleplus.activities.SignInActivity;
-import book.contact.david.contactbookappgoogleplus.db.ContactDAO;
 import book.contact.david.contactbookappgoogleplus.db.PhoneDAO;
 import book.contact.david.contactbookappgoogleplus.model.Phone;
 
@@ -36,10 +35,7 @@ public class CustomPhoneDialogFragment extends DialogFragment {
 
     PhoneDAO phoneDAO;
 
-    public static final String ARG_ITEM_ID = "contact_dialog_fragment";
-
-    private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "yyyy-MM-dd", Locale.ENGLISH);
+    public static final String ARG_ITEM_ID = "phone_dialog_fragment";
 
     /*
      * Callback used to communicate with PhoneListFragment to notify the list adapter.
@@ -81,8 +77,12 @@ public class CustomPhoneDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.update, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 phone.setNumber(etNumber.getText().toString());
-                phone.setContactId(SignInActivity.googleId);
+
+                String currentContactId = Integer.toString(getContext().getSharedPreferences("myContactPref", Context.MODE_PRIVATE).getInt("contactId",0));
+                phone.setContactId(currentContactId);
+
                 long result = phoneDAO.update(phone);
+
                 if (result > 0) {
                     PhoneActivity activity = (PhoneActivity) getActivity();
                     activity.onFinishPhoneDialog();

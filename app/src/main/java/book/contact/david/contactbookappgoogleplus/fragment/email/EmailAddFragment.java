@@ -1,4 +1,4 @@
-package book.contact.david.contactbookappgoogleplus.fragment.phone;
+package book.contact.david.contactbookappgoogleplus.fragment.email;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,39 +18,38 @@ import java.lang.ref.WeakReference;
 
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.Utils;
-import book.contact.david.contactbookappgoogleplus.db.PhoneDAO;
-import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactListFragment;
-import book.contact.david.contactbookappgoogleplus.model.Phone;
+import book.contact.david.contactbookappgoogleplus.db.EmailDAO;
+import book.contact.david.contactbookappgoogleplus.model.Email;
 
 /**
- * Created by TechnoA on 15.06.2017.
+ * Created by TechnoA on 16.06.2017.
  */
 
-public class PhoneAddFragment extends Fragment implements View.OnClickListener {
+public class EmailAddFragment extends Fragment implements View.OnClickListener {
 
     // UI references
-    private EditText phoneNumber;
+    private EditText eTEmail;
     private Button addButton;
     private Button resetButton;
 
 
-    Phone phone = null;
+    Email email = null;
 
-    private PhoneDAO phoneDAO;
-    private PhoneAddFragment.AddPhoneTask addPhoneTask;
+    private EmailDAO emailDAO;
+    private AddEmailTask addEmailTask;
 
-    public static final String ARG_ITEM_ID = "phone_add_fragment";
+    public static final String ARG_ITEM_ID = "email_add_fragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        phoneDAO = new PhoneDAO(getActivity());
+        emailDAO = new EmailDAO(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_add_phone, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_add_email, container, false);
 
         findViewsById(rootView);
 
@@ -66,48 +65,48 @@ public class PhoneAddFragment extends Fragment implements View.OnClickListener {
     }
 
     protected void resetAllFields() {
-        phoneNumber.setText("");
+        eTEmail.setText("");
     }
 
-    private void setPhone() {
+    private void setEmail() {
 
         String currentContactId = Integer.toString(getContext().getSharedPreferences("myContactPref", Context.MODE_PRIVATE).getInt("contactId",0));
         Utils.logInfo("currentContactId = " + currentContactId);
 
-        phone = new Phone();
-        phone.setNumber(phoneNumber.getText().toString());
-        phone.setContactId(currentContactId);
+        email = new Email();
+        email.setEmail(eTEmail.getText().toString());
+        email.setContactId(currentContactId);
 
     }
 
     @Override
     public void onResume() {
 
-        getActivity().setTitle(R.string.add_phone);
+        getActivity().setTitle(R.string.add_email);
 
         android.app.ActionBar actionBar = getActivity().getActionBar();
 
         if(actionBar!=null) {
-            actionBar.setTitle(R.string.add_phone);
+            actionBar.setTitle(R.string.add_email);
         }
 
         super.onResume();
     }
 
     private void findViewsById(View rootView) {
-        phoneNumber = (EditText) rootView.findViewById(R.id.etxt_number);
-        addButton = (Button) rootView.findViewById(R.id.button_add_number);
-        resetButton = (Button) rootView.findViewById(R.id.button_reset_number);
+        eTEmail = (EditText) rootView.findViewById(R.id.etxt_email);
+        addButton = (Button) rootView.findViewById(R.id.button_add_email);
+        resetButton = (Button) rootView.findViewById(R.id.button_reset_email);
     }
 
     @Override
     public void onClick(View view) {
         if (view == addButton) {
-            setPhone();
-            addPhoneTask = new PhoneAddFragment.AddPhoneTask(getActivity());
-            addPhoneTask.execute((Void) null);
+            setEmail();
+            addEmailTask = new EmailAddFragment.AddEmailTask(getActivity());
+            addEmailTask.execute((Void) null);
 
-            switchContent(new PhoneListFragment(), PhoneListFragment.ARG_ITEM_ID);
+            switchContent(new EmailListFragment(), EmailListFragment.ARG_ITEM_ID);
 
         } else if (view == resetButton) {
             resetAllFields();
@@ -121,22 +120,22 @@ public class PhoneAddFragment extends Fragment implements View.OnClickListener {
         while (fragmentManager.popBackStackImmediate());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_phone_frame, fragment, tag);
+        transaction.replace(R.id.content_email_frame, fragment, tag);
         transaction.commit();
 
     }
 
-    public class AddPhoneTask extends AsyncTask<Void, Void, Long> {
+    public class AddEmailTask extends AsyncTask<Void, Void, Long> {
 
         private final WeakReference<Activity> activityWeakRef;
 
-        public AddPhoneTask(Activity context) {
+        public AddEmailTask(Activity context) {
             this.activityWeakRef = new WeakReference<Activity>(context);
         }
 
         @Override
         protected Long doInBackground(Void... arg0) {
-            long result = phoneDAO.save(phone);
+            long result = emailDAO.save(email);
             return result;
         }
 
@@ -144,7 +143,7 @@ public class PhoneAddFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Long result) {
             if (activityWeakRef.get() != null && !activityWeakRef.get().isFinishing()) {
                 if (result != -1) {
-                    Toast.makeText(activityWeakRef.get(), "Phone Saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activityWeakRef.get(), "Email Saved", Toast.LENGTH_LONG).show();
                 }
             }
         }

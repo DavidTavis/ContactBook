@@ -1,7 +1,9 @@
 package book.contact.david.contactbookappgoogleplus.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,7 +15,6 @@ import android.view.MenuItem;
 
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactAddFragment;
-import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactListFragment;
 import book.contact.david.contactbookappgoogleplus.fragment.phone.CustomPhoneDialogFragment;
 import book.contact.david.contactbookappgoogleplus.fragment.phone.PhoneAddFragment;
 import book.contact.david.contactbookappgoogleplus.fragment.phone.PhoneListFragment;
@@ -29,12 +30,14 @@ public class PhoneActivity extends AppCompatActivity implements
     private PhoneListFragment phoneListFragment;
     private PhoneAddFragment phoneAddFragment;
 
-
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.phone_activity);
+
+        pref = getSharedPreferences("myContactPref", Context.MODE_PRIVATE);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -116,15 +119,19 @@ public class PhoneActivity extends AppCompatActivity implements
     protected void setFragmentTitle(int resourseId) {
         setTitle(resourseId);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null)
-            actionBar.setTitle(resourseId);
+        if (actionBar != null) {
+//            actionBar.setTitle(resourseId);
+
+            String name = pref.getString("contactFirstName", "Some") + " " + pref.getString("contactLastName", "Name");
+            actionBar.setTitle(name);
+        }
     }
 
     /*
      * We call super.onBackPressed(); when the stack entry count is > 0. if it
-     * is instanceof ContactListFragment or if the stack entry count is == 0, then
+     * is instanceof PhoneListFragment or if the stack entry count is == 0, then
      * we prompt the user whether to quit the app or not by displaying dialog.
-     * In other words, from ContactListFragment on back press it quits the app.
+     * In other words, from PhoneListFragment on back press it quits the app.
      */
     @Override
     public void onBackPressed() {
@@ -132,9 +139,9 @@ public class PhoneActivity extends AppCompatActivity implements
         if (fm.getBackStackEntryCount() > 0) {
             super.onBackPressed();
         } else if (contentFragment instanceof PhoneListFragment || fm.getBackStackEntryCount() == 0) {
-            //finish();
+            finish();
             //Shows an alert dialog on quit
-            onShowQuitDialog();
+//            onShowQuitDialog();
         }
     }
 

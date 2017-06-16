@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,9 +110,24 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
             setContact();
             addConactTask = new AddContactTask(getActivity());
             addConactTask.execute((Void) null);
+
+            switchContent(new ContactListFragment(),ContactListFragment.ARG_ITEM_ID);
+
         } else if (view == resetButton) {
             resetAllFields();
         }
+    }
+
+    private void switchContent(Fragment fragment, String tag){
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        while (fragmentManager.popBackStackImmediate());
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, fragment, tag);
+        transaction.commit();
+
     }
 
     public class AddContactTask extends AsyncTask<Void, Void, Long> {

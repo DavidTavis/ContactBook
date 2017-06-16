@@ -21,6 +21,7 @@ public class PhoneDAO extends ContactDBDAO{
     public static final String DEPT_NAME_WITH_PREFIX = "cont.first_name";
 
     private static final String WHERE_ID_EQUALS = DataBaseHelper.PHONE_ID_COLUMN + " =?";
+    private static final String WHERE_CONTACT_ID_EQUALS = DataBaseHelper.PHONE_CONTACT_ID_COLUMN + " =?";
 
     SharedPreferences pref;
 
@@ -53,6 +54,11 @@ public class PhoneDAO extends ContactDBDAO{
     public int deletePhone(Phone phone) {
         return database.delete(DataBaseHelper.PHONE_TABLE, WHERE_ID_EQUALS,
                 new String[] { phone.getId() + "" });
+    }
+
+    public int deletePhone(String contactId){
+        return database.delete(DataBaseHelper.PHONE_TABLE, WHERE_CONTACT_ID_EQUALS,
+                new String[] { contactId });
     }
 
     public ArrayList<Phone> getPhones() {

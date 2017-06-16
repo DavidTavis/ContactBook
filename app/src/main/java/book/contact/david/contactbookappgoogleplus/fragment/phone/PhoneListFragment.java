@@ -72,9 +72,9 @@ public class PhoneListFragment extends Fragment implements OnItemClickListener,
         if (phone != null) {
             Bundle arguments = new Bundle();
             arguments.putParcelable("selectedPhone", phone);
-//            CustomContactDialogFragment customContactDialogFragment = new CustomContactDialogFragment();
-//            customContactDialogFragment.setArguments(arguments);
-//            customContactDialogFragment.show(getFragmentManager(),CustomContactDialogFragment.ARG_ITEM_ID);
+            CustomPhoneDialogFragment customPhoneDialogFragment = new CustomPhoneDialogFragment();
+            customPhoneDialogFragment.setArguments(arguments);
+            customPhoneDialogFragment.show(getFragmentManager(),CustomPhoneDialogFragment.ARG_ITEM_ID);
         }
     }
 
@@ -120,7 +120,7 @@ public class PhoneListFragment extends Fragment implements OnItemClickListener,
     }
 
     /*
-     * This method is invoked from MainActivity onFinishDialog() method. It is
+     * This method is invoked from PhoneActivity onFinishPhoneDialog() method. It is
      * called from CustomPhoneDialogFragment when a phone record is updated.
      * This is used for communicating between fragments.
      */

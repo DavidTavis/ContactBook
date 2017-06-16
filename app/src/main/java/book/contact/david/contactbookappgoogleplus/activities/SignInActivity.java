@@ -93,10 +93,11 @@ public class SignInActivity extends AppCompatActivity implements
             });
         }
     }
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+//        signInFromCache();
+    }
 
     @Override
     protected void onResume() {

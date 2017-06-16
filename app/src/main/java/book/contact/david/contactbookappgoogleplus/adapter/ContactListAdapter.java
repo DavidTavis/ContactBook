@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.Utils;
+import book.contact.david.contactbookappgoogleplus.activities.EmailActivity;
 import book.contact.david.contactbookappgoogleplus.activities.PhoneActivity;
 import book.contact.david.contactbookappgoogleplus.model.Contact;
 
@@ -26,17 +27,20 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
 
     private Context context;
     List<Contact> contacts;
+    SharedPreferences.Editor editor;
 
     public ContactListAdapter(Context context, List<Contact> contacts) {
         super(context, R.layout.list_contact_item, contacts);
         this.context = context;
         this.contacts = contacts;
+        editor = getContext().getSharedPreferences("myContactPref",Context.MODE_PRIVATE).edit();
     }
 
     private class ViewHolder {
         TextView firstNameTxt;
         TextView lastNameTxt;
         ImageButton addPhoneBtn;
+        ImageButton addEmailBtn;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        Utils.logInfo("position="+ position);
         final Contact contact = (Contact) getItem(position);
 
         ViewHolder holder = null;
@@ -70,16 +75,38 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
             holder.firstNameTxt = (TextView) convertView.findViewById(R.id.txt_first_name);
             holder.lastNameTxt = (TextView) convertView.findViewById(R.id.txt_last_name);
             holder.addPhoneBtn = (ImageButton) convertView.findViewById(R.id.button_add_number);
+            holder.addEmailBtn = (ImageButton) convertView.findViewById(R.id.button_add_email);
+
+            holder.addPhoneBtn.setTag(position);
+            holder.addEmailBtn.setTag(position);
 
             holder.addPhoneBtn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    SharedPreferences.Editor editor = getContext().getSharedPreferences("myContactPref",Context.MODE_PRIVATE).edit();
-                    editor.putInt("contactId",contact.getId()).commit();
+                    int position = (Integer) v.getTag();
+                    Contact currentContact = getItem(position);
 
-                    Utils.logInfo("click image button - contactId = " + contact.getId());
+                    editor.putInt("contactId",currentContact.getId()).commit();
+                    editor.putString("contactFirstName",currentContact.getFirstName()).commit();
+                    editor.putString("contactLastName",currentContact.getLastName()).commit();
 
                     Intent intent = new Intent(context, PhoneActivity.class);
+                    context.startActivity(intent);
+
+                }
+            });
+
+            holder.addEmailBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    int position = (Integer) v.getTag();
+                    Contact currentContact = getItem(position);
+
+                    editor.putInt("contactId",currentContact.getId()).commit();
+                    editor.putString("contactFirstName",currentContact.getFirstName()).commit();
+                    editor.putString("contactLastName",currentContact.getLastName()).commit();
+
+                    Intent intent = new Intent(context, EmailActivity.class);
                     context.startActivity(intent);
 
                 }
@@ -90,6 +117,7 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
 
 
 

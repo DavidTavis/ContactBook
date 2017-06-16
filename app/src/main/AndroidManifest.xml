@@ -23,7 +23,6 @@
         <activity android:name=".activities.MainActivity"
             android:label="@string/contacts"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize">
 
         </activity>
@@ -31,7 +30,12 @@
         <activity android:name=".activities.PhoneActivity"
             android:label="@string/phones"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity android:name=".activities.EmailActivity"
+            android:label="@string/emails"
+            android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize">
 
         </activity>
