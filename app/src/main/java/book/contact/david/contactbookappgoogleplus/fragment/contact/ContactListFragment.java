@@ -59,9 +59,6 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
         emailDAO = new EmailDAO(activity);
 
         pref = getActivity().getSharedPreferences("Sorting",MODE_PRIVATE);
-//        pref.edit().putBoolean("SortingAlphabetical", false).commit();
-//        pref.edit().putBoolean("SortingAscending", false).commit();
-//        pref.edit().putBoolean("SortingDescending", false).commit();
     }
 
     @Override

@@ -27,9 +27,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private Fragment contentFragment;
     private ContactListFragment contactListFragment;
-    private ContactAddFragment contactAddFragment;
     private SharedPreferences pref;
-    private ContactListFragment.GetContactTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
