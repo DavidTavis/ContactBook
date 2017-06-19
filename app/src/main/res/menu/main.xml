@@ -5,18 +5,36 @@
         android:id="@+id/action_add_contact"
         android:icon="@drawable/account_plus"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always"
         android:title="@string/add_contact"/>
     <item
         android:id="@+id/action_add_phone_number"
         android:icon="@drawable/phone_plus"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always"
         android:title="@string/add_phone"/>
     <item
         android:id="@+id/action_add_email"
         android:icon="@drawable/email"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="always"
         android:title="@string/add_email"/>
+    <item
+        android:id="@+id/action_descending_sort"
+        android:icon="@drawable/sort_descending"
+        android:orderInCategory="99"
+        app:showAsAction="always"
+        android:title="@string/sort_desc"/>
+    <item
+        android:id="@+id/action_ascending_sort"
+        android:icon="@drawable/sort_ascending"
+        android:orderInCategory="98"
+        app:showAsAction="always"
+        android:title="@string/sort_asc"/>
+    <item
+        android:id="@+id/action_alphabetical_sort"
+        android:icon="@drawable/sort_alphabetical"
+        android:orderInCategory="97"
+        app:showAsAction="always"
+        android:title="@string/sort_alphabetical"/>
 </menu>

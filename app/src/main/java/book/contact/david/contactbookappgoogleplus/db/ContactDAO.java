@@ -55,14 +55,68 @@ public class ContactDAO extends ContactDBDAO {
                 WHERE_ID_EQUALS, new String[] { contact.getId() + "" });
     }
 
+    public ArrayList<Contact> getContactsAlphabeticAscDesc(String direction) {
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        Cursor cursor = database.query(DataBaseHelper.CONTACT_TABLE,
+                new String[] { DataBaseHelper.CONTACT_ID_COLUMN,
+                        DataBaseHelper.CONTACT_FIRST_NAME_COLUMN,
+                        DataBaseHelper.CONTACT_LAST_NAME_COLUMN,
+                        DataBaseHelper.CONTACT_USER_ID_COLUMN},
+                DataBaseHelper.CONTACT_USER_ID_COLUMN + " = ?",
+                new String[]{SignInActivity.googleId}, null, null, DataBaseHelper.CONTACT_FIRST_NAME_COLUMN + " COLLATE NOCASE " + direction);
+
+        while (cursor.moveToNext()) {
+            Contact contact = new Contact();
+            contact.setId(cursor.getInt(0));
+            contact.setFirstName(cursor.getString(1));
+            contact.setLastName(cursor.getString(2));
+            contact.setUserId(cursor.getString(3));
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
+    public ArrayList<Contact> getContactsPhoneAscDesc(String direction) {
+
+        StringBuilder query = new StringBuilder();
+
+        query = query.append("SELECT ")
+                .append("contact.id, ")
+                .append("contact.first_name, ")
+                .append("contact.last_name, ")
+                .append("contact.user_id,")
+                .append("phoneSubquery.countPhoneNumber ")
+                .append("FROM contact ")
+                .append("LEFT JOIN (SELECT phone.contact_id AS contact_id, count(phone.number) AS countPhoneNumber ")
+                .append("FROM phone group BY contact_id) phoneSubquery ")
+                .append("ON contact.id = phoneSubquery.contact_id ")
+                .append("ORDER BY countPhoneNumber ")
+                .append(direction);
+
+        Cursor cursor = database.rawQuery(query.toString(), null);
+
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+
+        while (cursor.moveToNext()) {
+            Contact contact = new Contact();
+            contact.setId(cursor.getInt(0));
+            contact.setFirstName(cursor.getString(1));
+            contact.setLastName(cursor.getString(2));
+            contact.setUserId(cursor.getString(3));
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
     public ArrayList<Contact> getContacts() {
         ArrayList<Contact> contacts = new ArrayList<Contact>();
         Cursor cursor = database.query(DataBaseHelper.CONTACT_TABLE,
                 new String[] { DataBaseHelper.CONTACT_ID_COLUMN,
                         DataBaseHelper.CONTACT_FIRST_NAME_COLUMN,
                         DataBaseHelper.CONTACT_LAST_NAME_COLUMN,
-                        DataBaseHelper.CONTACT_USER_ID_COLUMN}, DataBaseHelper.CONTACT_USER_ID_COLUMN + " = ?", new String[]{SignInActivity.googleId}, null, null,
-                null);
+                        DataBaseHelper.CONTACT_USER_ID_COLUMN},
+                DataBaseHelper.CONTACT_USER_ID_COLUMN + " = ?",
+                new String[]{SignInActivity.googleId}, null, null, null);
 
         while (cursor.moveToNext()) {
             Contact contact = new Contact();

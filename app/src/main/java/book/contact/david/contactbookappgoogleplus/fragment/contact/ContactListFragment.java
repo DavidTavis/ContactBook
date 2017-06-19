@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ import book.contact.david.contactbookappgoogleplus.db.EmailDAO;
 import book.contact.david.contactbookappgoogleplus.db.PhoneDAO;
 import book.contact.david.contactbookappgoogleplus.model.Contact;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by TechnoA on 14.06.2017.
  */
@@ -42,15 +45,23 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
     PhoneDAO phoneDAO;
     EmailDAO emailDAO;
 
+    private SharedPreferences pref;
     private GetContactTask task;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         activity = getActivity();
+
         contactDAO = new ContactDAO(activity);
         phoneDAO = new PhoneDAO(activity);
         emailDAO = new EmailDAO(activity);
+
+        pref = getActivity().getSharedPreferences("Sorting",MODE_PRIVATE);
+//        pref.edit().putBoolean("SortingAlphabetical", false).commit();
+//        pref.edit().putBoolean("SortingAscending", false).commit();
+//        pref.edit().putBoolean("SortingDescending", false).commit();
     }
 
     @Override
@@ -113,7 +124,33 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
 
         @Override
         protected ArrayList<Contact> doInBackground(Void... arg0) {
-            ArrayList<Contact> contactList = contactDAO.getContacts();
+            boolean sortingAlphabetical = pref.getBoolean("SortingAlphabetical",false);
+            boolean sortingAscending = pref.getBoolean("SortingAscending",false);
+            boolean sortingDescending = pref.getBoolean("SortingDescending",false);
+
+            boolean alphabeticAscending = pref.getBoolean("AlphabeticDirection", true);
+
+            ArrayList<Contact> contactList = null;
+
+            if (sortingAlphabetical) {
+                if (alphabeticAscending) {
+                    contactList = contactDAO.getContactsAlphabeticAscDesc("ASC");
+                    Utils.logInfo("Ascending");
+                } else {
+                    contactList = contactDAO.getContactsAlphabeticAscDesc("DESC");
+                    Utils.logInfo("Descending");
+                }
+                pref.edit().putBoolean("AlphabeticDirection", !alphabeticAscending).commit();
+            } else if(sortingAscending) {
+                Utils.logInfo("Ascending count phone sorting");
+                contactList = contactDAO.getContactsPhoneAscDesc("ASC");
+            }else if(sortingDescending){
+                Utils.logInfo("Descending count phone sorting");
+                contactList = contactDAO.getContactsPhoneAscDesc("DESC");
+            }else{
+                Utils.logInfo("Without sorting");
+                contactList = contactDAO.getContacts();
+            }
             return contactList;
         }
 
@@ -121,13 +158,12 @@ public class ContactListFragment extends Fragment implements OnItemClickListener
         protected void onPostExecute(ArrayList<Contact> contactList) {
             if (activityWeakRef.get() != null && !activityWeakRef.get().isFinishing()) {
                 contacts = contactList;
-                if (contactList != null) {
-                    if (contactList.size() != 0) {
-                        contactListAdapter = new ContactListAdapter(activity,contactList);
-                        contactListView.setAdapter(contactListAdapter);
-                    } else {
-                        Toast.makeText(activity, "No Contact Records",Toast.LENGTH_LONG).show();
-                    }
+                if (contactList.size() != 0) {
+                    contactListAdapter = new ContactListAdapter(activity, contacts);
+                    contactListView.setAdapter(contactListAdapter);
+                    contactListView.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(activity, "No Contact Records", Toast.LENGTH_LONG).show();
                 }
             }
         }

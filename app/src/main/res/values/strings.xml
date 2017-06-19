@@ -58,6 +58,9 @@
     <string name="add_contact">Add Contact</string>
     <string name="add_phone">Add Phone Number</string>
     <string name="add_email">Add Email</string>
+    <string name="sort_desc">Descending</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_asc">Ascending</string>
     <string name="update_contact">Update Contact</string>
     <string name="update_phone">Update Phone</string>
     <string name="update_email">Update Email</string>

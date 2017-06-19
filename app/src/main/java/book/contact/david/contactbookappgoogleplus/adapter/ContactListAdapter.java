@@ -33,6 +33,7 @@ public class ContactListAdapter extends ArrayAdapter<Contact> {
         super(context, R.layout.list_contact_item, contacts);
         this.context = context;
         this.contacts = contacts;
+        Utils.logInfo("Constructor ContactListAdapter");
         editor = getContext().getSharedPreferences("myContactPref",Context.MODE_PRIVATE).edit();
     }
 

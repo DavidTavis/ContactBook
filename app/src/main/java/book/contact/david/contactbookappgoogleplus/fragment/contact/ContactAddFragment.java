@@ -39,7 +39,6 @@ public class ContactAddFragment extends Fragment implements OnClickListener {
     private Button addButton;
     private Button resetButton;
 
-
     Contact contact = null;
 
     private ContactDAO contactDAO;

@@ -2,6 +2,7 @@ package book.contact.david.contactbookappgoogleplus.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import book.contact.david.contactbookappgoogleplus.R;
 import book.contact.david.contactbookappgoogleplus.fragment.contact.ContactAddFragment;
@@ -26,11 +28,17 @@ public class MainActivity extends AppCompatActivity implements
     private Fragment contentFragment;
     private ContactListFragment contactListFragment;
     private ContactAddFragment contactAddFragment;
-
+    private SharedPreferences pref;
+    private ContactListFragment.GetContactTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contact_activity);
+
+        pref = getSharedPreferences("Sorting",MODE_PRIVATE);
+        pref.edit().putBoolean("SortingAlphabetical", false).commit();
+        pref.edit().putBoolean("SortingAscending", false).commit();
+        pref.edit().putBoolean("SortingDescending", false).commit();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -70,11 +78,38 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_contact:
-                setFragmentTitle(R.string.add_contact);
-                contactAddFragment = new ContactAddFragment();
-                switchContent(contactAddFragment, ContactAddFragment.ARG_ITEM_ID);
+                switchContent(new ContactAddFragment(), ContactAddFragment.ARG_ITEM_ID);
+                break;
+            case R.id.action_alphabetical_sort:
+                pref.edit().putBoolean("SortingAlphabetical", true).commit();
+                pref.edit().putBoolean("SortingAscending", false).commit();
+                pref.edit().putBoolean("SortingDescending", false).commit();
 
-                return true;
+                switchContent(new ContactListFragment(),ContactListFragment.ARG_ITEM_ID);
+
+                Toast.makeText(this, "List is sorted alphabetical", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.action_ascending_sort:
+                pref.edit().putBoolean("SortingAlphabetical", false).commit();
+                pref.edit().putBoolean("SortingAscending", true).commit();
+                pref.edit().putBoolean("SortingDescending", false).commit();
+
+                switchContent(new ContactListFragment(),ContactListFragment.ARG_ITEM_ID);
+
+                Toast.makeText(this, "List is sorted ascending by count of phone number", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.action_descending_sort:
+                pref.edit().putBoolean("SortingAlphabetical", false).commit();
+                pref.edit().putBoolean("SortingAscending", false).commit();
+                pref.edit().putBoolean("SortingDescending", true).commit();
+
+                switchContent(new ContactListFragment(),ContactListFragment.ARG_ITEM_ID);
+
+                Toast.makeText(this, "List is sorted descending by count of phone number", Toast.LENGTH_SHORT).show();
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

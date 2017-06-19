@@ -70,6 +70,9 @@ public class PhoneActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.main, menu);
         menu.findItem(R.id.action_add_contact).setVisible(false);
         menu.findItem(R.id.action_add_email).setVisible(false);
+        menu.findItem(R.id.action_alphabetical_sort).setVisible(false);
+        menu.findItem(R.id.action_ascending_sort).setVisible(false);
+        menu.findItem(R.id.action_descending_sort).setVisible(false);
         return true;
     }
 
